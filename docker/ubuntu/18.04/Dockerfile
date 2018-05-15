@@ -6,9 +6,9 @@ ARG FDB_DEB_REVISION="1"
 ARG FDB_PKG_URL="https://www.foundationdb.org/downloads/${FDB_VERSION}/ubuntu/installers"
 ARG FDB_CLIENTS_PKG="foundationdb-clients_${FDB_VERSION}-${FDB_DEB_REVISION}_amd64.deb"
 ARG FDB_SERVER_PKG="foundationdb-server_${FDB_VERSION}-${FDB_DEB_REVISION}_amd64.deb"
+ARG FDB_USER_DIRS="/etc/foundationdb /var/log/foundationdb /var/lib/foundationdb"
 
-ARG FDB_LISTEN_ADDR="0.0.0.0"
-
+ENV FDB_USER_DIRS="${FDB_USER_DIRS}"
 ENV FDB_UID="1000"
 ENV FDB_GID="1000"
 
@@ -20,11 +20,11 @@ RUN apt update && \
 RUN dpkg -i /tmp/${FDB_CLIENTS_PKG} /tmp/${FDB_SERVER_PKG} && \
     rm /tmp/${FDB_CLIENTS_PKG} /tmp/${FDB_SERVER_PKG}
 
-RUN sed -i "s/^listen_address.*/listen_address = ${FDB_LISTEN_ADDR}:4500/" /etc/foundationdb/foundationdb.conf && \
-    cp -r /etc/foundationdb /etc/foundationdb.default
+RUN for dir in ${FDB_USER_DIRS}; do mv ${dir} ${dir}.default; done
 
-CMD cp -r --no-clobber /etc/foundationdb.default/* /etc/foundationdb && \
+CMD sed -i "s/127.0.0.1/$(grep $(hostname) /etc/hosts | awk '{print $1}')/" /etc/foundationdb.default/fdb.cluster && \
+    for dir in ${FDB_USER_DIRS}; do cp -r --no-clobber ${dir}.default/* ${dir}; done && \
     groupmod -g ${FDB_GID} --non-unique foundationdb && \
     usermod -g ${FDB_GID} -u ${FDB_UID} --non-unique foundationdb && \
-    chown -R foundationdb:foundationdb /etc/foundationdb /var/log/foundationdb /var/lib/foundationdb && \
+    chown -R foundationdb:foundationdb ${FDB_USER_DIRS} && \
     /usr/lib/foundationdb/fdbmonitor
