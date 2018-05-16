@@ -3,7 +3,6 @@ set -e
 
 if [ ! -f /etc/foundationdb/fdb.cluster ]
 then
-
         # Ensure a unique cluster ID for new installs.
         CLUSTER_ID=$(mktemp -u XXXXXXXX)
         sed -i s/^@/$CLUSTER_ID@/ /etc/foundationdb.default/fdb.cluster
