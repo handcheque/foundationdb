@@ -1,20 +1,30 @@
 #!/usr/bin/env bash
 set -e
 
-CONTAINER_IP=$(grep $(hostname) /etc/hosts | awk '{print $1}')
-CURR_FDB_UID=$(id -u foundationdb)
-CURR_FDB_GID=$(id -g foundationdb)
+if [ ! -f /etc/foundationdb/fdb.cluster ]
+then
 
-# Replace the default IP address with the container's IP.
-sed -i s/@.*:/@$CONTAINER_IP:/ /etc/foundationdb.default/fdb.cluster
+        # Ensure a unique cluster ID for new installs.
+        CLUSTER_ID=$(mktemp -u XXXXXXXX)
+        sed -i s/^@/$CLUSTER_ID@/ /etc/foundationdb.default/fdb.cluster
+
+        # Replace the default IP address with the container's IP.
+        CONTAINER_IP=$(grep $(hostname) /etc/hosts | awk '{print $1}')
+        sed -i s/@.*:/@$CONTAINER_IP:/ /etc/foundationdb.default/fdb.cluster
+fi
 
 # Copy the default files into volumes if they do not exist.
 for DIR in $FDB_USER_DIRS
 do
-        cp -r --no-clobber $DIR.default/* $DIR
+        if [ -e $DIR.default/* ]
+        then
+                cp -r --no-clobber $DIR.default/* $DIR
+        fi
 done
 
 # Sync the foundationdb user and group with the host.
+CURR_FDB_UID=$(id -u foundationdb)
+CURR_FDB_GID=$(id -g foundationdb)
 if [ $CURR_FDB_UID != $FDB_UID -o $CURR_FDB_GID != $FDB_GID ]
 then
         groupmod -g $FDB_GID --non-unique foundationdb

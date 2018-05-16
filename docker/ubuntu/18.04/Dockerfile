@@ -20,9 +20,10 @@ RUN apt update && \
 RUN dpkg -i /tmp/$FDB_CLIENTS_PKG /tmp/$FDB_SERVER_PKG && \
     rm /tmp/$FDB_CLIENTS_PKG /tmp/$FDB_SERVER_PKG
 
-RUN for DIR in $FDB_USER_DIRS; do mv $DIR $DIR.default; done
+RUN rm /var/log/foundationdb/trace.127.000.000.001.*.1.xml && \
+    for DIR in $FDB_USER_DIRS; do mv $DIR $DIR.default; done
 
-COPY ../../entrypoint.sh /usr/local/bin/
+COPY entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["/usr/lib/foundationdb/fdbmonitor"]
