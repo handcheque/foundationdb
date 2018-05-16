@@ -3,6 +3,7 @@ set -e
 
 if [ ! -f /etc/foundationdb/fdb.cluster ]
 then
+
         # Ensure a unique cluster ID for new installs.
         CLUSTER_ID=$(mktemp -u XXXXXXXX)
         sed -i s/^@/$CLUSTER_ID@/ /etc/foundationdb.default/fdb.cluster
@@ -15,10 +16,7 @@ fi
 # Copy the default files into volumes if they do not exist.
 for DIR in $FDB_USER_DIRS
 do
-        if [ -e $DIR.default/* ]
-        then
-                cp -r --no-clobber $DIR.default/* $DIR
-        fi
+        find $DIR.default -maxdepth 1 -exec cp -r --no-clobber {} $DIR \;
 done
 
 # Sync the foundationdb user and group with the host.
