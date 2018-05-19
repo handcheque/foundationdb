@@ -1,4 +1,4 @@
-FROM centos:6.9
+FROM centos:7.4.1708
 
 ARG FDB_VERSION="5.1.7"
 ARG FDB_RPM_RELEASE="1"
@@ -16,7 +16,7 @@ ADD $FDB_PKG_URL/$FDB_CLIENTS_PKG /tmp/$FDB_CLIENTS_PKG
 ADD $FDB_PKG_URL/$FDB_SERVER_PKG /tmp/$FDB_SERVER_PKG
 
 RUN yum install -y python initscripts && \
-    rm -rf /var/cache/yum
+    rm -rf /var/cache/yum 
 RUN rpm -Uvh /tmp/$FDB_CLIENTS_PKG /tmp/$FDB_SERVER_PKG && \
     rm /tmp/$FDB_CLIENTS_PKG /tmp/$FDB_SERVER_PKG
 

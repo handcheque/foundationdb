@@ -16,7 +16,8 @@ ADD $FDB_PKG_URL/$FDB_CLIENTS_PKG /tmp/$FDB_CLIENTS_PKG
 ADD $FDB_PKG_URL/$FDB_SERVER_PKG /tmp/$FDB_SERVER_PKG
 
 RUN apt update && \
-    apt install -y python
+    apt install -y python && \
+    apt clean
 RUN dpkg -i /tmp/$FDB_CLIENTS_PKG /tmp/$FDB_SERVER_PKG && \
     rm /tmp/$FDB_CLIENTS_PKG /tmp/$FDB_SERVER_PKG
 
