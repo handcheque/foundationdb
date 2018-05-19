@@ -12,6 +12,7 @@ This is for development/testing purposes, official Docker builds are available o
 
 ```bash
 git clone https://github.com/apple/foundationdb
+
 docker build -t foundationdb:5.1.7-ubuntu-18.04 foundationdb/docker/ubuntu/18.04
 ```
 
@@ -23,10 +24,12 @@ docker build -t foundationdb:5.1.7-ubuntu-18.04 foundationdb/docker/ubuntu/18.04
 This will start a Docker container running FoundationDB.
 
 ```bash
+mkdir -p {etc,log}
+
 docker run -d \
   -e FDB_UID=$(id -u) \
   -e FDB_GID=$(id -g) \
-  --mount type=volume,src=fdb4500-example-data,dst=/var/lib/foundationdb
+  --mount type=volume,src=fdb-example-data,dst=/var/lib/foundationdb \
   --mount type=bind,src=$(pwd)/etc,dst=/etc/foundationdb \
   --mount type=bind,src=$(pwd)/log,dst=/var/log/foundationdb \
   --name fdb-example \
@@ -51,7 +54,7 @@ version: '3'
 
 services:
 
-  ... your app here ...
+  # ... your app here ...
 
   fdb:
     image: foundationdb:5.1.7-ubuntu-18.04
