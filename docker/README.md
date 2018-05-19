@@ -59,6 +59,7 @@ services:
   fdb:
     image: foundationdb:5.1.7-ubuntu-18.04
     volumes:
+      - fdb-data:/var/lib/foundationdb
       - ./etc:/etc/foundationdb
       - ./log:/var/log/foundationdb
 ```
