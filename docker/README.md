@@ -56,7 +56,7 @@ services:
 
   # ... your app here ...
 
-  fdb:
+  db:
     image: foundationdb:5.1.7-ubuntu-18.04
     volumes:
       - fdb-data:/var/lib/foundationdb
