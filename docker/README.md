@@ -3,7 +3,7 @@
 ## Base Images
 
 * Ubuntu `18.04`, `16.04`
-* CentOS `6.9`
+* CentOS `7.4`, `6.9`
 * Debian `9.4` (not officially supported)
 
 ## Build
