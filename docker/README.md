@@ -88,6 +88,7 @@ docker network create fdb-example
 docker run -d \
   -e FDB_UID=$(id -u) \
   -e FDB_GID=$(id -g) \
+  -e FDB_MAKE_PUBLIC=-a \
   --mount type=volume,src=fdb4500-example-data,dst=/var/lib/foundationdb \
   --mount type=bind,src=$(pwd)/fdb4500-example/etc,dst=/etc/foundationdb \
   --mount type=bind,src=$(pwd)/fdb4500-example/log,dst=/var/log/foundationdb \
@@ -95,6 +96,8 @@ docker run -d \
   --name fdb4500-example \
   foundationdb:5.1.7-ubuntu-18.04
 ```
+
+**Note:** `-e FDB_MAKE_PUBLIC=-a` replaces `127.0.0.1` in `fdb.cluster` with the container IP address.
 
 ### Configure unique IDs for the remaining containers
 
@@ -161,6 +164,7 @@ cp fdb4500-example/etc/fdb.cluster fdb4502-example/etc
 docker run -d \
   -e FDB_UID=$(id -u) \
   -e FDB_GID=$(id -g) \
+  -e FDB_MAKE_PUBLIC=-a \
   --mount type=volume,src=fdb4501-example-data,dst=/var/lib/foundationdb \
   --mount type=bind,src=$(pwd)/fdb4501-example/etc,dst=/etc/foundationdb \
   --mount type=bind,src=$(pwd)/fdb4501-example/log,dst=/var/log/foundationdb \
@@ -171,6 +175,7 @@ docker run -d \
 docker run -d \
   -e FDB_UID=$(id -u) \
   -e FDB_GID=$(id -g) \
+  -e FDB_MAKE_PUBLIC=-a \
   --mount type=volume,src=fdb4502-example-data,dst=/var/lib/foundationdb \
   --mount type=bind,src=$(pwd)/fdb4502-example/etc,dst=/etc/foundationdb \
   --mount type=bind,src=$(pwd)/fdb4502-example/log,dst=/var/log/foundationdb \
