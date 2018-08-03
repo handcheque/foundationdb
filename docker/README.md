@@ -13,7 +13,7 @@ This is for development/testing purposes, official Docker builds are available o
 ```bash
 git clone https://github.com/apple/foundationdb
 
-docker build -t foundationdb:5.1.7-ubuntu-18.04 foundationdb/docker/ubuntu/18.04
+docker build -t foundationdb:5.2.5-ubuntu-18.04 foundationdb/docker/ubuntu/18.04
 ```
 
 **Note:** Replace `ubuntu-18.04` and `ubuntu/18.04` with the version that you are building.
@@ -34,7 +34,7 @@ docker run -d \
   --mount type=bind,src=$(pwd)/log,dst=/var/log/foundationdb \
   --name fdb-example \
   -p 127.0.0.1:4500:4500 \
-  foundationdb:5.1.7-ubuntu-18.04
+  foundationdb:5.2.5-ubuntu-18.04
 ```
 
 * `--mount type=volume,src=fdb-example-data,dst=/var/lib/foundationdb` sets the name of the volume containing the database state to `fdb-example-data`.
@@ -57,7 +57,7 @@ services:
   # ... your app here ...
 
   db:
-    image: foundationdb:5.1.7-ubuntu-18.04
+    image: foundationdb:5.2.5-ubuntu-18.04
     volumes:
       - fdb-data:/var/lib/foundationdb
       - ./etc:/etc/foundationdb
@@ -94,7 +94,7 @@ docker run -d \
   --mount type=bind,src=$(pwd)/fdb4500-example/log,dst=/var/log/foundationdb \
   --net fdb-example \
   --name fdb4500-example \
-  foundationdb:5.1.7-ubuntu-18.04
+  foundationdb:5.2.5-ubuntu-18.04
 ```
 
 **Note:** `-e FDB_MAKE_PUBLIC=-a` replaces `127.0.0.1` in `fdb.cluster` with the container IP address.
@@ -170,7 +170,7 @@ docker run -d \
   --mount type=bind,src=$(pwd)/fdb4501-example/log,dst=/var/log/foundationdb \
   --net fdb-example \
   --name fdb4501-example \
-  foundationdb:5.1.7-ubuntu-18.04
+  foundationdb:5.2.5-ubuntu-18.04
 
 docker run -d \
   -e FDB_UID=$(id -u) \
@@ -181,7 +181,7 @@ docker run -d \
   --mount type=bind,src=$(pwd)/fdb4502-example/log,dst=/var/log/foundationdb \
   --net fdb-example \
   --name fdb4502-example \
-  foundationdb:5.1.7-ubuntu-18.04
+  foundationdb:5.2.5-ubuntu-18.04
 ```
 
 ### Reconfigure cluster replication

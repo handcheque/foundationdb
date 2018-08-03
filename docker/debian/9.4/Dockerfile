@@ -1,6 +1,6 @@
 FROM debian:9.4
 
-ARG FDB_VERSION="5.1.7"
+ARG FDB_VERSION="5.2.5"
 ARG FDB_DEB_REVISION="1"
 
 ARG FDB_PKG_URL="https://www.foundationdb.org/downloads/${FDB_VERSION}/ubuntu/installers"
